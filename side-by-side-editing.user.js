@@ -145,11 +145,11 @@ function sideBySideEditing(toAppend) {
         }
 
         //stretch the text input window to match the preview length
-        // - "215" came from trial and error
+        // - "214" came from trial and error
         // - Can this be done using toggleClass?
         var previewHeight = wmdpreview.height();
-        if(previewHeight > 215) {  //default input box is 200px tall, only scale if necessary
-            wmdinput.height(previewHeight - 15);
+        if(previewHeight > 214) {  //default input box is 200px tall, only scale if necessary
+            wmdinput.height(previewHeight - 14);
         }
     } else {  //sbs was toggled off
         //check if sbs is off for all existing questions and answers
