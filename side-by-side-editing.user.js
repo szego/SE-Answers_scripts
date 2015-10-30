@@ -32,13 +32,13 @@ GM_addStyle ('                                      \
         margin-left: 35px !important;               \
     }                                               \
                                                     \
-    .draft-saved.sbs-on.sbs-newq {                  \
+    .draft-saved.sbs-on.sbs-isolated {              \
         margin-left: 40px !important;               \
         height: 15px !important;                    \
         float: left !important;                     \
     }                                               \
                                                     \
-    .draft-discarded.sbs-on.sbs-newq {              \
+    .draft-discarded.sbs-on.sbs-isolated {          \
         margin-left: 40px !important;               \
         height: 15px !important;                    \
         float: left !important;                     \
@@ -78,15 +78,11 @@ GM_addStyle ('                                      \
         float: right !important;                    \
     }                                               \
                                                     \
-    .wmd-preview.sbs-on.sbs-newq {                  \
+    .wmd-preview.sbs-on.sbs-isolated {              \
         margin-top: 10px !important;                \
     }                                               \
                                                     \
-    .tag-editor-p.sbs-on.sbs-newq {                 \
-        float: left !important;                     \
-    }                                               \
-                                                    \
-    .form-item.sbs-on.sbs-newq {                    \
+    .form-item.sbs-on.sbs-isolated {                \
         float: left !important;                     \
     }                                               \
 ');
@@ -113,19 +109,19 @@ function sideBySideEditing(toAppend) {
     wmdinput.parent().toggleClass('sbs-on');  //wmdinput.parent() has class wmd-container
     wmdpreview.toggleClass('sbs-on');
 
-    if(toAppend.length > 0) {  //options specific to making edits on existing questions/answers
+    if($('#answers').length > 0) {  //options specific to existing question pages
         posteditor.find('.hide-preview').toggleClass('sbs-on');
         
         //hack: float nuttiness for "Edit Summary" box
         var editcommentp1 = $('#edit-comment' + toAppend).parent().parent().parent().parent().parent();
         editcommentp1.toggleClass('edit-comment-p1 sbs-on');
         editcommentp1.parent().toggleClass('edit-comment-p2 sbs-on');
-    } else if(window.location.pathname.indexOf('questions/ask') > -1) {  //extra CSS for 'ask' page
-        wmdpreview.toggleClass('sbs-newq');
-        draftsaved.toggleClass('sbs-newq');
-        draftdiscarded.toggleClass('sbs-newq');
-        $('.tag-editor').parent().toggleClass('tag-editor-p sbs-on sbs-newq');
-        $('#question-only-section').children('.form-item').toggleClass('sbs-on sbs-newq');
+    } else {  //extra CSS for editors on isolated pages
+        wmdpreview.toggleClass('sbs-isolated');
+        draftsaved.toggleClass('sbs-isolated');
+        draftdiscarded.toggleClass('sbs-isolated');
+        $('.tag-editor').parent().toggleClass('sbs-on sbs-isolated');
+        $('#question-only-section').children('.form-item').toggleClass('sbs-on sbs-isolated');
 
         //swap the order of things to prevent draft saved/discarded messages from
         // moving the preview pane around
