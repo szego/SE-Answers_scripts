@@ -121,6 +121,7 @@ function sideBySideEditing(toAppend) {
         draftsaved.toggleClass('sbs-isolated');
         draftdiscarded.toggleClass('sbs-isolated');
         $('.tag-editor').parent().toggleClass('sbs-on sbs-isolated');
+        $('#edit-comment').parent().toggleClass('sbs-on sbs-isolated');
         $('#question-only-section').children('.form-item').toggleClass('sbs-on sbs-isolated');
 
         //swap the order of things to prevent draft saved/discarded messages from
@@ -193,26 +194,42 @@ function addButton(jNode) {
                 sideBySideEditing(toAppend);
             }
         });
+        $('.review-cancel-editing').on('click', function() {  //for the extra cancel button in the review queue
+            if( $('#content').hasClass('sbs-on') ) {  //sbs was on, so turn it off
+                sideBySideEditing(toAppend);
+            }
+        });
     }, 1000)
 }
 
-if(window.location.pathname.indexOf('questions/ask') < 0) {  //not posting a new question
-    //get question and answer IDs for keeping track of the event listeners
-    var anchorList = $('#answers').children("a");  //answers have anchor tags before them of the form <a name="#">,
-                                                   // where # is the answer ID
-    var numAnchors = anchorList.length;
-    var itemIDs = [];
+//set up the event listeners for the sbs toggle button(s)
 
-    for(i = 1; i <= numAnchors-2; i++) {  //the first and last anchors aren't answers
-        itemIDs.push(anchorList[i].name);
-    }
-    itemIDs.push( $('.question').data('questionid') );
+if(window.location.pathname.indexOf('/questions/') > -1) {  //posting a new question or visiting an existing one
+    if(window.location.pathname.indexOf('/questions/ask') < 0) {  //visiting an existing question
+        var anchorList = $('#answers').children("a");  //answers have anchor tags before them of the form <a name="#">,
+                                                       // where # is the answer ID
+        var numAnchors = anchorList.length;
+        var itemIDs = [];
 
-    //event listeners for adding the sbs toggle buttons for editing existing questions or answers
-    for(i = 0; i <= numAnchors-2; i++) {
-        waitForKeyElements('#wmd-redo-button-' + itemIDs[i], addButton);
+        for(i = 1; i <= numAnchors-2; i++) {  //the first and last anchors aren't answers
+            itemIDs.push(anchorList[i].name);
+        }
+        itemIDs.push( $('.question').data('questionid') );
+
+        //event listeners for adding the sbs toggle buttons for editing existing questions or answers
+        for(i = 0; i <= numAnchors-2; i++) {
+            waitForKeyElements('#wmd-redo-button-' + itemIDs[i], addButton);
+        }
     }
+    //event listener for adding the sbs toggle button for posting new questions or answers
+    waitForKeyElements('#wmd-redo-button', addButton);
+} else if(window.location.pathname.indexOf('/review/') > -1 ||
+          window.location.pathname.indexOf('/posts/') > -1) {  //supported isolated editing pages
+    waitForKeyElements('[id^="wmd-redo-button"]', addButton);
 }
 
-//event listener for adding the sbs toggle button for posting new questions or answers
-waitForKeyElements('#wmd-redo-button', addButton);
+/* The script does nothing on pages without /questions/, /review/,
+ * or /posts/ in the url. Additional code might be required to get
+ * it working nicely on other pages---it's preferable that it not
+ * be available rather than only work partially.
+ */
