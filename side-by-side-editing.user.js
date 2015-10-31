@@ -89,6 +89,10 @@ GM_addStyle ('                                      \
     .preview-options.sbs-on.sbs-isolated {          \
         margin-bottom: -6px !important;             \
     }                                               \
+                                                    \
+    .community-option.sbs-on.sbs-isolated {         \
+        margin-bottom: -6px !important;             \
+    }                                               \
 ');
 
 /**
@@ -121,11 +125,13 @@ function sideBySideEditing(toAppend) {
     editcommentp1.parent().toggleClass('edit-comment-p2 sbs-on');
 
     if($('#answers').length == 0) {  //extra CSS for editors on isolated pages
+        var communityoption = $('[name="communitymode"]').parent();
         var hidepreviewParent = hidepreview.parent();
 
         wmdpreview.toggleClass('sbs-isolated');
         draftsaved.toggleClass('sbs-isolated');
         draftdiscarded.toggleClass('sbs-isolated');
+        communityoption.toggleClass('sbs-on sbs-isolated');
         hidepreviewParent.toggleClass('sbs-on sbs-isolated');  //hidepreviewParent has class preview-options if it exists
         $('.tag-editor').parent().toggleClass('sbs-on sbs-isolated');  //$('.tag-editor').parent() has class form-item
         $('#edit-comment').parent().toggleClass('sbs-on sbs-isolated');  //$('#edit-comment').parent() has class form-item if it exists
@@ -139,6 +145,7 @@ function sideBySideEditing(toAppend) {
             draftdiscarded.after(wmdpreview);
         }
         wmdpreview.before(hidepreviewParent);
+        wmdpreview.before(communityoption);
     }
 
     if(wmdpreview.hasClass('sbs-on')) {  //sbs was toggled on
