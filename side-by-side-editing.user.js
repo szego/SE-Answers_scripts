@@ -119,8 +119,8 @@ function sideBySideEditing(toAppend) {
         wmdpreview.toggleClass('sbs-isolated');
         draftsaved.toggleClass('sbs-isolated');
         draftdiscarded.toggleClass('sbs-isolated');
-        $('.tag-editor').parent().toggleClass('sbs-on sbs-isolated');
-        $('#edit-comment').parent().toggleClass('sbs-on sbs-isolated');
+        $('.tag-editor').parent().toggleClass('sbs-on sbs-isolated');  //$('.tag-editor').parent() has class form-item
+        $('#edit-comment').parent().toggleClass('sbs-on sbs-isolated');  //$('#edit-comment').parent() has class form-item if it exists
         $('#question-only-section').children('.form-item').toggleClass('sbs-on sbs-isolated');
 
         //swap the order of things to prevent draft saved/discarded messages from
