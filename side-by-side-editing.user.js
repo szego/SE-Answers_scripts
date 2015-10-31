@@ -91,7 +91,7 @@ GM_addStyle ('                                      \
     }                                               \
                                                     \
     .community-option.sbs-on.sbs-isolated {         \
-        margin-bottom: -6px !important;             \
+        margin-bottom: -20px !important;            \
     }                                               \
 ');
 
