@@ -121,10 +121,12 @@ function sideBySideEditing(toAppend) {
     editcommentp1.parent().toggleClass('edit-comment-p2 sbs-on');
 
     if($('#answers').length == 0) {  //extra CSS for editors on isolated pages
+        var hidepreviewParent = hidepreview.parent();
+
         wmdpreview.toggleClass('sbs-isolated');
         draftsaved.toggleClass('sbs-isolated');
         draftdiscarded.toggleClass('sbs-isolated');
-        hidepreview.parent().toggleClass('sbs-on sbs-isolated');  //hidepreview.parent() has class preview-options if it exists
+        hidepreviewParent.toggleClass('sbs-on sbs-isolated');  //hidepreviewParent has class preview-options if it exists
         $('.tag-editor').parent().toggleClass('sbs-on sbs-isolated');  //$('.tag-editor').parent() has class form-item
         $('#edit-comment').parent().toggleClass('sbs-on sbs-isolated');  //$('#edit-comment').parent() has class form-item if it exists
         $('#question-only-section').children('.form-item').toggleClass('sbs-on sbs-isolated');
@@ -136,7 +138,7 @@ function sideBySideEditing(toAppend) {
         } else {
             draftdiscarded.after(wmdpreview);
         }
-        wmdpreview.before(hidepreview.parent());
+        wmdpreview.before(hidepreviewParent);
     }
 
     if(wmdpreview.hasClass('sbs-on')) {  //sbs was toggled on
