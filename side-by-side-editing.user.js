@@ -108,10 +108,9 @@ function sideBySideEditing(toAppend) {
     posteditor.toggleClass('sbs-on');
     wmdinput.parent().toggleClass('sbs-on');  //wmdinput.parent() has class wmd-container
     wmdpreview.toggleClass('sbs-on');
+    posteditor.find('.hide-preview').toggleClass('sbs-on');
 
     if($('#answers').length > 0) {  //options specific to existing question pages
-        posteditor.find('.hide-preview').toggleClass('sbs-on');
-        
         //hack: float nuttiness for "Edit Summary" box
         var editcommentp1 = $('#edit-comment' + toAppend).parent().parent().parent().parent().parent();
         editcommentp1.toggleClass('edit-comment-p1 sbs-on');
