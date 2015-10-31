@@ -85,6 +85,10 @@ GM_addStyle ('                                      \
     .form-item.sbs-on.sbs-isolated {                \
         float: left !important;                     \
     }                                               \
+                                                    \
+    .preview-options.sbs-on.sbs-isolated {          \
+        margin-bottom: -6px !important;             \
+    }                                               \
 ');
 
 /**
@@ -100,6 +104,7 @@ function sideBySideEditing(toAppend) {
     var posteditor = $('#post-editor' + toAppend);
     var draftsaved = $('#draft-saved' + toAppend);
     var draftdiscarded = $('#draft-discarded' + toAppend);
+    var hidepreview = posteditor.find('.hide-preview');
 
     $('#wmd-button-bar' + toAppend).toggleClass('sbs-on');
     
@@ -108,7 +113,6 @@ function sideBySideEditing(toAppend) {
     posteditor.toggleClass('sbs-on');
     wmdinput.parent().toggleClass('sbs-on');  //wmdinput.parent() has class wmd-container
     wmdpreview.toggleClass('sbs-on');
-    posteditor.find('.hide-preview').toggleClass('sbs-on');
 
     if($('#answers').length > 0) {  //options specific to existing question pages
         //hack: float nuttiness for "Edit Summary" box
@@ -116,9 +120,11 @@ function sideBySideEditing(toAppend) {
         editcommentp1.toggleClass('edit-comment-p1 sbs-on');
         editcommentp1.parent().toggleClass('edit-comment-p2 sbs-on');
     } else {  //extra CSS for editors on isolated pages
+    hidepreview.toggleClass('sbs-on');
         wmdpreview.toggleClass('sbs-isolated');
         draftsaved.toggleClass('sbs-isolated');
         draftdiscarded.toggleClass('sbs-isolated');
+        hidepreview.parent().toggleClass('sbs-on sbs-isolated');  //hidepreview.parent() has class preview-options if it exists
         $('.tag-editor').parent().toggleClass('sbs-on sbs-isolated');  //$('.tag-editor').parent() has class form-item
         $('#edit-comment').parent().toggleClass('sbs-on sbs-isolated');  //$('#edit-comment').parent() has class form-item if it exists
         $('#question-only-section').children('.form-item').toggleClass('sbs-on sbs-isolated');
@@ -130,6 +136,7 @@ function sideBySideEditing(toAppend) {
         } else {
             draftdiscarded.after(wmdpreview);
         }
+        wmdpreview.before(hidepreview.parent());
     }
 
     if(wmdpreview.hasClass('sbs-on')) {  //sbs was toggled on
