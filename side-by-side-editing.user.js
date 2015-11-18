@@ -124,18 +124,12 @@ function sideBySideEditing(toAppend) {
     editcommentp1.toggleClass('edit-comment-p1 sbs-on');
     editcommentp1.parent().toggleClass('edit-comment-p2 sbs-on');
 
-    if($('#answers').length == 0) {  //extra CSS for editors on isolated pages
-        var communityoption = $('[name="communitymode"]').parent();
-        var hidepreviewParent = hidepreview.parent();
-
+    //Extra css for the various non-/questions/#/ pages. Each page type gets
+    // its own branch to keep things organized.
+    if(window.location.pathname.indexOf('/questions/ask') > -1) {  //extra css for the /ask/ page
         wmdpreview.toggleClass('sbs-isolated');
         draftsaved.toggleClass('sbs-isolated');
         draftdiscarded.toggleClass('sbs-isolated');
-        communityoption.toggleClass('sbs-on sbs-isolated');
-        hidepreviewParent.toggleClass('sbs-on sbs-isolated');  //hidepreviewParent has class preview-options if it exists
-        $('.tag-editor').parent().toggleClass('sbs-on sbs-isolated');  //$('.tag-editor').parent() has class form-item
-        $('#edit-comment').parent().toggleClass('sbs-on sbs-isolated');  //$('#edit-comment').parent() has class form-item if it exists
-        $('#question-only-section').children('.form-item').toggleClass('sbs-on sbs-isolated');
 
         //swap the order of things to prevent draft saved/discarded messages from
         // moving the preview pane around
@@ -144,8 +138,32 @@ function sideBySideEditing(toAppend) {
         } else {
             draftdiscarded.after(wmdpreview);
         }
-        wmdpreview.before(hidepreviewParent);
-        wmdpreview.before(communityoption);
+
+        if(toAppend.length == 0) {  //the current editor is for the new question
+            $('.tag-editor').parent().toggleClass('sbs-on sbs-isolated');  //$('.tag-editor').parent() has class form-item
+            $('#question-only-section').children('.form-item').toggleClass('sbs-on sbs-isolated');
+        } else {  //the current editor is for posting an answer to the new question
+            var communityoption = $('#communitymode' + toAppend).parent();
+
+            $('#question-answer-section').children('.form-item').toggleClass('sbs-on sbs-isolated');
+            communityoption.toggleClass('sbs-on sbs-isolated');  //this has class community-option
+
+            wmdpreview.before(communityoption);
+        }
+    } else if(window.location.pathname.indexOf('/posts/') > -1) {  //extra css for isolated question/answer editing
+        var communityoption = $('[name="communitymode"]').parent();
+
+        wmdpreview.toggleClass('sbs-isolated');
+        communityoption.toggleClass('sbs-on sbs-isolated');  //communityoption has class community-option if it exists (editing an answer)
+        $('.tag-editor').parent().toggleClass('sbs-on sbs-isolated');  //$('.tag-editor').parent() has class form-item if it exists (editing a question)
+        $('#edit-comment').parent().toggleClass('sbs-on sbs-isolated');  //$('#edit-comment').parent() has class form-item
+    } else if(window.location.pathname.indexOf('/review/') > -1) {  //extra css for editing from the review queue
+        var hidepreviewParent = hidepreview.parent();
+
+        wmdpreview.toggleClass('sbs-isolated');
+        hidepreviewParent.toggleClass('sbs-on sbs-isolated');  //hidepreviewParent has class preview-options
+        $('.tag-editor').parent().toggleClass('sbs-on sbs-isolated');  //$('.tag-editor').parent() has class form-item if it exists (editing a question)
+        $('#edit-comment').parent().toggleClass('sbs-on sbs-isolated');  //$('#edit-comment').parent() has class form-item
     }
 
     if(wmdpreview.hasClass('sbs-on')) {  //sbs was toggled on
@@ -168,7 +186,10 @@ function sideBySideEditing(toAppend) {
         if($('.question').find('.wmd-preview.sbs-on').length == 0 && $('.answer').find('.wmd-preview.sbs-on').length == 0) {
             $('.votecell').removeClass('sbs-on');
 
-            if ( !($('#wmd-preview').hasClass('sbs-on')) ) {  //sbs is off for everything
+            //In the following conditional, $('#wmd-preview') exists on
+            // /ask/, /questions/, /review/, and /post/ pages and
+            // $('#inline-answer') exists on the /ask/ page only.
+            if ( !($('#wmd-preview').hasClass('sbs-on')) && $('#inline-answer').find('.wmd-preview.sbs-on').length == 0 ) {  //sbs is off for everything
                 $('#sidebar').removeClass('sbs-on');
                 $('#content').removeClass('sbs-on');
             }
@@ -235,8 +256,12 @@ if(window.location.pathname.indexOf('/questions/') > -1) {  //posting a new ques
         for(i = 0; i <= numAnchors-2; i++) {
             waitForKeyElements('#wmd-redo-button-' + itemIDs[i], addButton);
         }
+    } else {  //asking a new question
+        //...for answering your new question from the '/ask/' page
+        // (is this always -42? Seems so...)
+        waitForKeyElements('#wmd-redo-button-42', addButton);
     }
-    //event listener for adding the sbs toggle button for posting new questions or answers
+    //...for posting new questions or answers
     waitForKeyElements('#wmd-redo-button', addButton);
 } else if(window.location.pathname.indexOf('/review/') > -1 ||
           window.location.pathname.indexOf('/posts/') > -1) {  //supported isolated editing pages
